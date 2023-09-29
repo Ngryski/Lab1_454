@@ -1,0 +1,39 @@
+﻿@page
+@model Lab1_454.Pages.Users.UsersModel
+@{
+}
+
+
+
+<h2>User View</h2>
+<form method="post">
+    <select asp-for="SelectedUser" class="form-control">
+        <option value="">Select User</option>
+        @foreach (var user in Model.UserRecord)
+        {
+            <option value="@user.UserID">@user.FirstName @user.LastName</option>
+        }
+    </select>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+@if (Model.SelectedUser > 0)
+{
+    Model.LoadMeetingsAndConferences(Model.SelectedUser);
+
+    <h2>Conferences:</h2>
+    <ul>
+        @foreach (var conference in Model.Conferences)
+        {
+            <li>@conference.EventName (Start Date: @conference.StartDate, End Date: @conference.EndDate)</li>
+        }
+    </ul>
+
+    <h2>Meetings:</h2>
+    <ul>
+        @foreach (var meeting in Model.Meetings)
+        {
+            <li>@meeting.MeetingName (Start Time: @meeting.StartTime, End Time: @meeting.EndTime)</li>
+        }
+    </ul>
+}
