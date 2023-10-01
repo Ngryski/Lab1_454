@@ -1,0 +1,32 @@
+﻿@page
+@model Lab1_454.Pages.Meetings.IndexModel
+@{
+}
+
+<h1>All Meetings</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Meeting ID</th>
+            <th>Meeting Name</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Conference ID</th>
+            <th>Room ID</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var meeting in Model.Meetings)
+        {
+            <tr>
+                <td>@meeting.MeetingID</td>
+                <td>@meeting.MeetingName</td>
+                <td>@meeting.StartTime</td>
+                <td>@meeting.EndTime</td>
+                <td>@meeting.ConferenceID</td>
+                <td>@meeting.RoomID</td>
+            </tr>
+        }
+    </tbody>
+</table>

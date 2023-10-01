@@ -63,7 +63,7 @@ namespace Lab1_454.Pages.DB
             SqlCommand cmdMeetingRead = new SqlCommand();
             cmdMeetingRead.Connection = Lab1DBConn;
             cmdMeetingRead.Connection.ConnectionString = Lab1DBConnString;
-            cmdMeetingRead.CommandText = $"SELECT * FROM [Meeting] WHERE UserID = {userId}";
+            cmdMeetingRead.CommandText = $"SELECT * FROM [Meeting] WHERE UserID IN [Usermeeting] = {userId}";
             cmdMeetingRead.Connection.Open();
 
             SqlDataReader tempReader = cmdMeetingRead.ExecuteReader();
@@ -109,6 +109,32 @@ namespace Lab1_454.Pages.DB
             }
 
             return conferences;
+        }
+
+
+        public static SqlDataReader ConferenceReader()
+        {
+            SqlCommand cmdProductRead = new SqlCommand();
+            cmdProductRead.Connection = Lab1DBConn;
+            cmdProductRead.Connection.ConnectionString = Lab1DBConnString;
+            cmdProductRead.CommandText = "SELECT * FROM [CONFERENCE]";
+            cmdProductRead.Connection.Open();
+            // Use ExecuteReader for SELECT Query. If trying to Insert, Update, or Delete use ExecuteNonQuery. If result is going to be a single number use ExecuteScalar(Sumation Functions)
+            SqlDataReader tempReader = cmdProductRead.ExecuteReader();
+            return tempReader;
+        }
+
+
+        public static SqlDataReader MeetingReader()
+        {
+            SqlCommand cmdProductRead = new SqlCommand();
+            cmdProductRead.Connection = Lab1DBConn;
+            cmdProductRead.Connection.ConnectionString = Lab1DBConnString;
+            cmdProductRead.CommandText = "SELECT * FROM [Meeting]";
+            cmdProductRead.Connection.Open();
+            // Use ExecuteReader for SELECT Query. If trying to Insert, Update, or Delete use ExecuteNonQuery. If result is going to be a single number use ExecuteScalar(Sumation Functions)
+            SqlDataReader tempReader = cmdProductRead.ExecuteReader();
+            return tempReader;
         }
     }
 

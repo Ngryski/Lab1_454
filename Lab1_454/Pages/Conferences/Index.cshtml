@@ -1,0 +1,31 @@
+﻿@page
+@model Lab1_454.Pages.Conferences.IndexModel
+@{
+    ViewData["Title"] = "All Conferences";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Conference ID</th>
+            <th>Event Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Location ID</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var conference in Model.Conferences)
+        {
+            <tr>
+                <td>@conference.ConferenceID</td>
+                <td>@conference.EventName</td>
+                <td>@conference.StartDate</td>
+                <td>@conference.EndDate</td>
+                <td>@conference.LocationID</td>
+            </tr>
+        }
+    </tbody>
+</table>
