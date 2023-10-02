@@ -56,29 +56,49 @@ namespace Lab1_454.Pages.DB
         }
 
 
+        public static void UpdateUser(User p)
+        {
+
+            string sqlQuery = "UPDATE [USER] SET ";
+
+            sqlQuery += "FirstName='" + p.FirstName + "',";
+            sqlQuery += "LastName='" + p.LastName + "',";
+            sqlQuery += "UserType='" + p.UserType + "' WHERE UserID=" + p.UserID;
+
+            SqlCommand cmdProductRead = new SqlCommand();
+            cmdProductRead.Connection = new SqlConnection();
+            cmdProductRead.Connection.ConnectionString = Lab1DBConnString;
+            cmdProductRead.CommandText = sqlQuery;
+            cmdProductRead.Connection.Open();
+            cmdProductRead.ExecuteNonQuery();
+        }
+
         public static List<Meeting> GetMeetingsForUser(int userId)
         {
             List<Meeting> meetings = new List<Meeting>();
 
-            SqlCommand cmdMeetingRead = new SqlCommand();
-            cmdMeetingRead.Connection = Lab1DBConn;
-            cmdMeetingRead.Connection.ConnectionString = Lab1DBConnString;
-            cmdMeetingRead.CommandText = $"SELECT * FROM [Meeting] WHERE UserID IN [Usermeeting] = {userId}";
-            cmdMeetingRead.Connection.Open();
-
-            SqlDataReader tempReader = cmdMeetingRead.ExecuteReader();
-
-            while (tempReader.Read())
+            using (SqlConnection Lab1DBConn = new SqlConnection(Lab1DBConnString))
             {
-                meetings.Add(new Meeting
+                Lab1DBConn.Open();
+
+                SqlCommand cmdMeetingRead = new SqlCommand();
+                cmdMeetingRead.Connection = Lab1DBConn;
+                cmdMeetingRead.CommandText = $"SELECT M.* FROM [MEETING] M JOIN [USERMEETING] UM ON M.MeetingID = UM.MeetingID WHERE UM.UserID = {userId}";
+
+                SqlDataReader tempReader = cmdMeetingRead.ExecuteReader();
+
+                while (tempReader.Read())
                 {
-                    MeetingID = Int32.Parse(tempReader["MeetingID"].ToString()),
-                    MeetingName = tempReader["MeetingName"].ToString(),
-                    StartTime = tempReader["StartTime"].ToString(),
-                    EndTime = tempReader["EndTime"].ToString(),
-                    ConferenceID = Int32.Parse(tempReader["ConferenceID"].ToString()),
-                    RoomID = Int32.Parse(tempReader["RoomID"].ToString())
-                });
+                    meetings.Add(new Meeting
+                    {
+                        MeetingID = Int32.Parse(tempReader["MeetingID"].ToString()),
+                        MeetingName = tempReader["MeetingName"].ToString(),
+                        StartTime = tempReader["StartTime"].ToString(),
+                        EndTime = tempReader["EndTime"].ToString(),
+                        ConferenceID = Int32.Parse(tempReader["ConferenceID"].ToString()),
+                        RoomID = Int32.Parse(tempReader["RoomID"].ToString())
+                    });
+                }
             }
 
             return meetings;
@@ -88,28 +108,32 @@ namespace Lab1_454.Pages.DB
         {
             List<Conference> conferences = new List<Conference>();
 
-            SqlCommand cmdConferenceRead = new SqlCommand();
-            cmdConferenceRead.Connection = Lab1DBConn;
-            cmdConferenceRead.Connection.ConnectionString = Lab1DBConnString;
-            cmdConferenceRead.CommandText = $"SELECT * FROM [Conference] WHERE UserID = {userId}";
-            cmdConferenceRead.Connection.Open();
-
-            SqlDataReader tempReader = cmdConferenceRead.ExecuteReader();
-
-            while (tempReader.Read())
+            using (SqlConnection Lab1DBConn = new SqlConnection(Lab1DBConnString))
             {
-                conferences.Add(new Conference
+                Lab1DBConn.Open();
+
+                SqlCommand cmdConferenceRead = new SqlCommand();
+                cmdConferenceRead.Connection = Lab1DBConn;
+                cmdConferenceRead.CommandText = $"SELECT C.* FROM [CONFERENCE] C JOIN [USERCONFERENCE] UC ON C.ConferenceID = UC.ConferenceID WHERE UC.UserID = {userId}";
+
+                SqlDataReader tempReader = cmdConferenceRead.ExecuteReader();
+
+                while (tempReader.Read())
                 {
-                    ConferenceID = Int32.Parse(tempReader["ConferenceID"].ToString()),
-                    EventName = tempReader["EventName"].ToString(),
-                    StartDate = tempReader["StartDate"].ToString(),
-                    EndDate = tempReader["EndDate"].ToString(),
-                    LocationID = Int32.Parse(tempReader["LocationID"].ToString())
-                });
+                    conferences.Add(new Conference
+                    {
+                        ConferenceID = Int32.Parse(tempReader["ConferenceID"].ToString()),
+                        EventName = tempReader["EventName"].ToString(),
+                        StartDate = tempReader["StartDate"].ToString(),
+                        EndDate = tempReader["EndDate"].ToString(),
+                        LocationID = Int32.Parse(tempReader["LocationID"].ToString())
+                    });
+                }
             }
 
             return conferences;
         }
+
 
 
         public static SqlDataReader ConferenceReader()
