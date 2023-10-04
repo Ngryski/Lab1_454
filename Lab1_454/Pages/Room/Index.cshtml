@@ -1,0 +1,28 @@
+﻿@page
+@model Lab1_454.Pages.Room.IndexModel
+@{
+}
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Room ID</th>
+            <th>Room Name</th>
+            <th>Capacity</th>
+            <th>Location ID</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rooms in Model.Room)
+        {
+            <tr>
+                <td>@rooms.RoomID</td>
+                <td>@rooms.RoomName</td>
+                <td>@rooms.Capacity</td>
+                <td>@rooms.LocationID</td>
+            </tr>
+        }
+    </tbody>
+</table>

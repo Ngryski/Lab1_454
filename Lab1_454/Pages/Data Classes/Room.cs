@@ -1,6 +1,6 @@
 ﻿namespace Lab1_454.Pages.Data_Classes
 {
-    public class Room
+    public class Rooms
     {
         public int RoomID { get; set; }
 

@@ -1,0 +1,16 @@
+﻿@page
+@model Lab1_454.Pages.Users.AddUserModel
+@{
+}
+
+
+<form asp-page="AddUser">
+    <input type="text" asp-for="NewUser.FirstName" placeholder="First Name" />
+    <input type="text" asp-for="NewUser.LastName" placeholder="Last Name" />
+    <input type="text" asp-for="NewUser.UserType" placeholder="Permission Type" width="100" />
+    <br />
+    <button type="submit">Add User -> </button>
+    <button type="submit" name="handler" value="PopulateFields">Populate Fields</button>
+    <button type="submit" name="handler" value="ClearFields">Clear Fields</button>
+    <a asp-page="ViewUser">Cancel</a>
+</form>

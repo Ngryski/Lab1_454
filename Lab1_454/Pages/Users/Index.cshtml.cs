@@ -38,7 +38,7 @@ namespace Lab1_454.Pages.Users
                     UserID = Int32.Parse(productReader["UserID"].ToString()),
                     FirstName = productReader["FirstName"].ToString(),
                     LastName = productReader["LastName"].ToString(),
-                    UserType= productReader["UserType"].ToString()
+                    UserType = productReader["UserType"].ToString()
                 });
 
 
@@ -52,14 +52,28 @@ namespace Lab1_454.Pages.Users
             {
                 LoadMeetingsAndConferences(SelectedUser);
             }
+
+            SqlDataReader productReader = DBClass.UserReader();
+
+            while (productReader.Read())
+            {
+                UserRecord.Add(new User
+                {
+                    UserID = Int32.Parse(productReader["UserID"].ToString()),
+                    FirstName = productReader["FirstName"].ToString(),
+                    LastName = productReader["LastName"].ToString(),
+                    UserType = productReader["UserType"].ToString()
+                });
+
+            }
+            DBClass.Lab1DBConn.Close();
+
+
+
+
+
+
+
         }
-        
-
-
-
-
-
-
-
     }
 }

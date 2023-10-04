@@ -40,19 +40,31 @@ namespace Lab1_454.Pages.DB
 
         public static void InsertUser(User u)
         {
-            String sqlQuery = "INSERT INTO [USER] (FirstName, LastName, UserType) VALUES ('";
-            sqlQuery += u.FirstName + "',";
-            sqlQuery += u.LastName + ",'";
-            sqlQuery += u.UserType + "')";
+            String sqlQuery = "INSERT INTO [USER] (FirstName, LastName, UserType) VALUES (@FirstName, @LastName, @UserType)";
 
             SqlCommand cmdProductRead = new SqlCommand();
             cmdProductRead.Connection = Lab1DBConn;
             cmdProductRead.Connection.ConnectionString = Lab1DBConnString;
             cmdProductRead.CommandText = sqlQuery;
+
+            cmdProductRead.Parameters.AddWithValue("@FirstName", u.FirstName);
+            cmdProductRead.Parameters.AddWithValue("@LastName", u.LastName);
+            cmdProductRead.Parameters.AddWithValue("@UserType", u.UserType);
+
             cmdProductRead.Connection.Open();
 
-            cmdProductRead.ExecuteNonQuery();
+            try
+            {
+                cmdProductRead.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
 
+            }
+            finally
+            {
+                cmdProductRead.Connection.Close();
+            }
         }
 
 
@@ -148,6 +160,36 @@ namespace Lab1_454.Pages.DB
             return tempReader;
         }
 
+        public static List<Conference> GetConference()
+        {
+            List<Conference> conferences = new List<Conference>();
+
+            SqlCommand cmdConferenceRead = new SqlCommand();
+            cmdConferenceRead.Connection = Lab1DBConn;
+            cmdConferenceRead.Connection.ConnectionString = Lab1DBConnString;
+            cmdConferenceRead.CommandText = "SELECT * FROM [CONFERENCE]";
+            cmdConferenceRead.Connection.Open();
+
+            SqlDataReader tempReader = cmdConferenceRead.ExecuteReader();
+
+            while (tempReader.Read())
+            {
+                conferences.Add(new Conference
+                {
+                    ConferenceID = Int32.Parse(tempReader["ConferenceID"].ToString()),
+                    EventName = tempReader["EventName"].ToString(),
+                    StartDate = tempReader["StartDate"].ToString(),
+                    EndDate = tempReader["EndDate"].ToString(),
+                    LocationID = Int32.Parse(tempReader["LocationID"].ToString())
+                });
+            }
+
+            tempReader.Close(); 
+            cmdConferenceRead.Connection.Close(); 
+
+            return conferences;
+        }
+
 
         public static SqlDataReader MeetingReader()
         {
@@ -160,7 +202,42 @@ namespace Lab1_454.Pages.DB
             SqlDataReader tempReader = cmdProductRead.ExecuteReader();
             return tempReader;
         }
+
+        public static SqlDataReader RoomReader()
+        {
+            SqlCommand cmdProductRead = new SqlCommand();
+            cmdProductRead.Connection = Lab1DBConn;
+            cmdProductRead.Connection.ConnectionString = Lab1DBConnString;
+            cmdProductRead.CommandText = "SELECT * FROM [ROOM]";
+            cmdProductRead.Connection.Open();
+            // Use ExecuteReader for SELECT Query. If trying to Insert, Update, or Delete use ExecuteNonQuery. If result is going to be a single number use ExecuteScalar(Sumation Functions)
+            SqlDataReader tempReader = cmdProductRead.ExecuteReader();
+            return tempReader;
+        }
+
+        public static void UpdateUserConferences(int userID, List<int> updatedConferenceIDs)
+        {
+            using (SqlConnection Lab1DBConn = new SqlConnection(Lab1DBConnString))
+            {
+                Lab1DBConn.Open();
+
+                // First, clear the user's existing conferences
+                SqlCommand clearConferencesCmd = new SqlCommand();
+                clearConferencesCmd.Connection = Lab1DBConn;
+                clearConferencesCmd.CommandText = $"DELETE FROM [USERCONFERENCE] WHERE UserID = {userID}";
+                clearConferencesCmd.ExecuteNonQuery();
+
+                // Then, add the updated conferences
+                foreach (var conferenceID in updatedConferenceIDs)
+                {
+                    SqlCommand addConferenceCmd = new SqlCommand();
+                    addConferenceCmd.Connection = Lab1DBConn;
+                    addConferenceCmd.CommandText = $"INSERT INTO [USERCONFERENCE] (UserID, ConferenceID) VALUES ({userID}, {conferenceID})";
+                    addConferenceCmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+
     }
-
 }
-

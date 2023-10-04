@@ -36,4 +36,9 @@
             <li>@meeting.MeetingName (Start Time: @meeting.StartTime, End Time: @meeting.EndTime)</li>
         }
     </ul>
+
+
+    <a asp-page="./AddUser" class="btn btn-primary">Add User</a>
+    <a asp-page="./EditUser" class="btn btn-secondary">Edit User</a>
+    <a asp-page="./EditUserConference" asp-route-userID="@Model.SelectedUser" class="btn btn-secondary">Edit User Conference</a>
 }

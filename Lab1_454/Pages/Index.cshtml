@@ -4,8 +4,55 @@
     ViewData["Title"] = "Database Home page";
 }
 
-<div class="text-center">
-    <a asp-page="/Users/Index">Manage Users</a>
-    <a asp-page="/Conferences/Index">Manage Conferences</a>
-    <a asp-page="/Meetings/Index">Manage Meetings</a>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Styled Links</title>
+    <style>
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            color: white;
+            background-color: #007BFF; /* You can change this color */
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+            .btn:hover {
+                background-color: #0056b3; /* Darker shade for hover */
+            }
+
+        /* Optional: Adding some general styling to center the buttons in the middle of the page */
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .text-center {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="text-center">
+        <a class="btn" asp-page="/Users/Index">Manage Users</a>
+        <a class="btn" asp-page="/Conferences/Index">Manage Conferences</a>
+        <a class="btn" asp-page="/Meetings/Index">Manage Meetings</a>
+        <a class="btn" asp-page="/Room/Index">Manage Rooms</a>
+    </div>
+</body>
+
+</html>
+

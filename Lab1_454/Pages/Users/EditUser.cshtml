@@ -1,0 +1,20 @@
+﻿@page
+@model Lab1_454.Pages.Users.EditUserModel
+@{
+    ViewData["Title"] = "Edit Product";
+}
+
+<form asp-page="EditUser">
+    <input type="hidden" asp-for="@Model.UserToUpdate.UserID" />
+    <label asp-for="@Model.UserToUpdate.FirstName"></label>
+    <input type="text" asp-for="@Model.UserToUpdate.FirstName" />
+    <br />
+    <label asp-for="@Model.UserToUpdate.LastName"></label>
+    <input type="text" asp-for="@Model.UserToUpdate.LastName" />
+    <br />
+    <label asp-for="@Model.UserToUpdate.UserType"></label>
+    <input type="text" asp-for="@Model.UserToUpdate.UserType" />
+    <br /><br />
+    <input type="submit" class="btn btn-success" asp-page="EditProducts" />
+    <a asp-page="Index" class="btn btn-secondary">Cancel</a>
+</form>

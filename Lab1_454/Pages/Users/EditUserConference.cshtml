@@ -1,0 +1,27 @@
+﻿@page
+@model Lab1_454.Pages.Users.EditUserConferenceModel
+@{
+}
+
+<form method="post">
+    <input type="hidden" asp-for="UserID" />
+
+    <h3>Select Conferences:</h3>
+    @foreach (var conference in Model.AvailableConferences)
+    {
+        <div>
+            <input type="checkbox" name="SelectedConferences" value="@conference.ConferenceID"
+            @(Model.SelectedConferences.Contains(conference.ConferenceID) ? "checked" : "") />
+            @conference.EventName
+        </div>
+    }
+
+    <button type="submit">Save Changes</button>
+</form>
+
+
+
+
+
+
+
