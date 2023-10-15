@@ -1,0 +1,50 @@
+﻿@page
+@model Lab1_454.Pages.Users.EditUserInformationModel
+@{
+    ViewData["Title"] = "Edit User Information";
+}
+
+<h1>Edit User Information</h1>
+
+@if (Model.Conferences != null && Model.Conferences.Any())
+{
+    <form method="post">
+        <div>
+            <label>Select Conference(s):</label><br />
+            @foreach (var conference in Model.Conferences)
+            {
+                <label>
+                    <input type="checkbox" name="SelectedConferences" value="@conference.ConferenceID" /> @conference.EventName
+                </label>
+
+                <br />
+            }
+            <button type="submit">Select</button>
+        </div>
+    </form>
+}
+
+@if (Model.Meetings != null && Model.Meetings.Any())
+{
+    <h2>Meetings for Selected Conference(s)</h2>
+    <form method="post">
+        <div>
+            @foreach (var meeting in Model.Meetings)
+            {
+                <label>
+                    <input type="checkbox" name="SelectedMeetings" value="@meeting.MeetingID" /> @meeting.MeetingName
+                </label>
+
+                <br />
+            }
+        </div>
+        <button type="submit">Sign Up for Selected Meetings</button>
+    </form>
+}
+
+
+
+
+
+
+

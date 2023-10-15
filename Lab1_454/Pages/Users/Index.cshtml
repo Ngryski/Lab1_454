@@ -1,44 +1,37 @@
 ﻿@page
+@using Lab1_454.Pages.DB;
+@using Lab1_454.Pages.Data_Classes;
 @model Lab1_454.Pages.Users.UsersModel
 @{
+    string username = HttpContext.Session.GetString("Username");
+    User user = DBClass.GetUserByUsername(username);
+    List<Meeting> userMeetings = DBClass.GetMeetingsForUser(user.UserID);
+    List<Conference> userConferences = DBClass.GetConferencesForUser(user.UserID);
 }
 
-
-
-<h2>User View</h2>
-<form method="post">
-    <select asp-for="SelectedUser" class="form-control">
-        <option value="">Select User</option>
-        @foreach (var user in Model.UserRecord)
-        {
-            <option value="@user.UserID">@user.FirstName @user.LastName</option>
-        }
-    </select>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-
-@if (Model.SelectedUser > 0)
+@if (user != null)
 {
-    Model.LoadMeetingsAndConferences(Model.SelectedUser);
+    <h2>Welcome, @user.FirstName @user.LastName!</h2>
 
-    <h2>Conferences:</h2>
+    <h3>Conferences:</h3>
     <ul>
-        @foreach (var conference in Model.Conferences)
+        @foreach (var conference in userConferences)
         {
-            <li>@conference.EventName (Start Date: @conference.StartDate, End Date: @conference.EndDate)</li>
+            <li>@conference.EventName</li>
         }
     </ul>
 
-    <h2>Meetings:</h2>
+    <h3>Meetings:</h3>
     <ul>
-        @foreach (var meeting in Model.Meetings)
+        @foreach (var meeting in userMeetings)
         {
-            <li>@meeting.MeetingName (Start Time: @meeting.StartTime, End Time: @meeting.EndTime)</li>
+            <li>@meeting.MeetingName</li>
         }
     </ul>
-
-
-    <a asp-page="./AddUser" class="btn btn-primary">Add User</a>
-    <a asp-page="./EditUser" class="btn btn-secondary">Edit User</a>
-    <a asp-page="./EditUserConference" asp-route-userID="@Model.SelectedUser" class="btn btn-secondary">Edit User Conference</a>
 }
+else
+{
+    <p class="text-danger">User not found</p>
+}
+
+<a asp-page="./EditUserInformation" class="btn btn-primary">Edit User Information</a>

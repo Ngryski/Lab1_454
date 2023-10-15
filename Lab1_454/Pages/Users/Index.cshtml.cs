@@ -29,25 +29,30 @@ namespace Lab1_454.Pages.Users
         }
         public void OnGet()
         {
-            SqlDataReader productReader = DBClass.UserReader();
+            UserRecord.Clear(); // Clear the list
 
-            while (productReader.Read())
+            string username = HttpContext.Session.GetString("Username");
+
+            User user = DBClass.GetUserByUsername(username);
+
+            if (user != null)
             {
                 UserRecord.Add(new User
                 {
-                    UserID = Int32.Parse(productReader["UserID"].ToString()),
-                    FirstName = productReader["FirstName"].ToString(),
-                    LastName = productReader["LastName"].ToString(),
-                    UserType = productReader["UserType"].ToString()
+                    UserID = user.UserID,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    UserType = user.UserType
                 });
 
-
+                LoadMeetingsAndConferences(user.UserID);
             }
-            DBClass.Lab1DBConn.Close();
         }
 
         public void OnPost()
         {
+            UserRecord.Clear(); // Clear the list
+
             if (SelectedUser > 0)
             {
                 LoadMeetingsAndConferences(SelectedUser);
@@ -64,16 +69,9 @@ namespace Lab1_454.Pages.Users
                     LastName = productReader["LastName"].ToString(),
                     UserType = productReader["UserType"].ToString()
                 });
-
             }
+
             DBClass.Lab1DBConn.Close();
-
-
-
-
-
-
-
         }
     }
 }
