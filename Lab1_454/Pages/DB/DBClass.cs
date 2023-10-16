@@ -263,25 +263,21 @@ namespace Lab1_454.Pages.DB
 
         public static int SecureLogin(string Username, string Password)
         {
-            string loginQuery =
-                "SELECT COUNT(*) FROM [USER] where Username = @Username and Password = @Password";
+            string loginQuery = "SELECT COUNT(*) FROM [USER] where Username = @Username and Password = @Password";
 
-            SqlCommand cmdLogin = new SqlCommand();
-            cmdLogin.Connection = Lab1DBConn;
-            cmdLogin.Connection.ConnectionString = Lab1DBConnString;
+            using (SqlConnection connection = new SqlConnection(Lab1DBConnString))
+            {
+                connection.Open();
 
-            cmdLogin.CommandText = loginQuery;
-            cmdLogin.Parameters.AddWithValue("@Username", Username);
-            cmdLogin.Parameters.AddWithValue("@Password", Password);
+                SqlCommand cmdLogin = new SqlCommand(loginQuery, connection);
 
-            cmdLogin.Connection.Open();
+                cmdLogin.Parameters.AddWithValue("@Username", Username);
+                cmdLogin.Parameters.AddWithValue("@Password", Password);
 
-            // ExecuteScalar() returns back data type Object
-            // Use a typecast to convert this to an int.
-            // Method returns first column of first row.
-            int rowCount = (int)cmdLogin.ExecuteScalar();
+                int rowCount = (int)cmdLogin.ExecuteScalar();
 
-            return rowCount;
+                return rowCount;
+            }
         }
 
 

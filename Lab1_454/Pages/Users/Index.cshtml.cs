@@ -29,7 +29,17 @@ namespace Lab1_454.Pages.Users
         }
         public void OnGet()
         {
-            UserRecord.Clear(); // Clear the list
+            if (HttpContext.Session.GetString("Username") == null)
+            {
+                ViewData["LoginError"] = "You must login to access that page!";
+                RedirectToPage("/Index");
+            }
+            else
+            {
+                ViewData["LoginMessage"] = "Hello, " + HttpContext.Session.GetString("Username");
+            } 
+
+            UserRecord.Clear(); 
 
             string username = HttpContext.Session.GetString("Username");
 
@@ -51,7 +61,7 @@ namespace Lab1_454.Pages.Users
 
         public void OnPost()
         {
-            UserRecord.Clear(); // Clear the list
+            UserRecord.Clear(); 
 
             if (SelectedUser > 0)
             {
@@ -73,5 +83,14 @@ namespace Lab1_454.Pages.Users
 
             DBClass.Lab1DBConn.Close();
         }
+
+
+        public IActionResult OnPostLogout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToPage("/Index"); 
+        }
+
+
     }
 }

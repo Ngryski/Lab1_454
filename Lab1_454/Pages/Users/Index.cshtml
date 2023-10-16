@@ -11,7 +11,7 @@
 
 @if (user != null)
 {
-    <h2>Welcome, @user.FirstName @user.LastName!</h2>
+    <h2>Welcome,  @user.FirstName @user.LastName!</h2>
 
     <h3>Conferences:</h3>
     <ul>
@@ -28,10 +28,25 @@
             <li>@meeting.MeetingName</li>
         }
     </ul>
+    <a asp-page="./EditUserInformation" class="btn btn-primary">Edit User Information</a>
+    <a asp-page="/AdminIndex" class="btn btn-primary">Home Page</a>
+    <form method="post" asp-page-handler="Logout">
+        <button type="submit" class="btn btn-danger">Logout</button>
+    </form>
 }
 else
 {
     <p class="text-danger">User not found</p>
 }
 
-<a asp-page="./EditUserInformation" class="btn btn-primary">Edit User Information</a>
+@{
+    string Username = HttpContext.Session.GetString("Username");
+}
+
+@if (!string.IsNullOrEmpty(Username))
+{
+    <div style="position: absolute; top: 0; right: 0; padding: 10px; background-color: #f0f0f0; border: 1px solid #ccc;">
+        @Username
+    </div>
+}
+

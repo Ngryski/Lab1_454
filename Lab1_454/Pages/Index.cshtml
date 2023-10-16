@@ -3,23 +3,30 @@
 
 
 
-<form asp-page="Index">
-    <input asp-for="Username" class="form-control" placeholder="Enter Username" />
-    <br />
-    <label>Enter Password:</label>
-    <input asp-for="Password" class="form-control" type="password" />
-    <br />
-    <input type="submit" class="btn btn-primary" />
-</form>
-<br />
 @{
-    if (HttpContext.Session.GetString("Username") != null)
+    string username = HttpContext.Session.GetString("Username");
+    bool isLoggedIn = !string.IsNullOrEmpty(username);
+}
+
+@if (isLoggedIn)
+{
+    <p class="text-success">You are signed in, @username</p>
+}
+else
+{
+    <form asp-page="Index">
+        <input asp-for="Username" class="form-control" placeholder="Enter Username" />
+        <br />
+        <label>Enter Password:</label>
+        <input asp-for="Password" class="form-control" type="password" />
+        <br />
+        <input type="submit" class="btn btn-primary" />
+    </form>
+    <br />
     {
-        <p class="text-success">@ViewData["LoginMessage"]</p>
-        
-    }
-    else
-    {
-        <p class="text-danger">@ViewData["LoginMessage"]</p>
+        if (ViewData["LoginMessage"] != null)
+        {
+            <p class="text-danger">@ViewData["LoginMessage"]</p>
+        }
     }
 }
